@@ -44,6 +44,7 @@ export async function DELETE(request: Request) {
     
     // If no images provided from frontend, try to find in current data
     if (!imagesToDelete || !Array.isArray(imagesToDelete)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const projectToDelete = projects.find((p: any) => p.id === id);
         if (projectToDelete) {
             imagesToDelete = projectToDelete.images;
@@ -81,6 +82,7 @@ export async function DELETE(request: Request) {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newProjects = projects.filter((p: any) => p.id !== id);
 
     if (newProjects.length !== projects.length) {
@@ -88,6 +90,7 @@ export async function DELETE(request: Request) {
       
       // Also delete the project folder if it exists
       try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const projectToDelete = projects.find((p: any) => p.id === id);
         if (projectToDelete) {
            let categoryFolder = 'other';

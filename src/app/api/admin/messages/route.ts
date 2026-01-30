@@ -32,6 +32,7 @@ export async function DELETE(request: Request) {
       messages = JSON.parse(fileContents);
     } catch (e) { return NextResponse.json({ success: true }); }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newMessages = messages.filter((m: any) => !ids.includes(m.id));
     await fs.writeFile(dataFilePath, JSON.stringify(newMessages, null, 2), 'utf8');
     return NextResponse.json({ success: true });

@@ -42,6 +42,7 @@ export async function DELETE(request: Request) {
     // Determine image to delete
     let imgUrl = image;
     if (!imgUrl) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const memberToDelete = team.find((m: any) => m.id === id);
         if (memberToDelete) {
             imgUrl = memberToDelete.image;
@@ -63,6 +64,7 @@ export async function DELETE(request: Request) {
             try {
                 await fs.unlink(fullPath);
                 console.log(`Successfully deleted: ${fullPath}`);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 if (err.code === 'ENOENT') {
                      console.log(`File not found: ${fullPath}`);
@@ -86,6 +88,7 @@ export async function DELETE(request: Request) {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newTeam = team.filter((m: any) => m.id !== id);
     await fs.writeFile(dataFilePath, JSON.stringify(newTeam, null, 2), 'utf8');
     return NextResponse.json({ success: true });

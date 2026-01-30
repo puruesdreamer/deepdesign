@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -35,10 +36,11 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 z-50 group">
           <div className="relative w-8 h-8 md:w-10 md:h-10 transition-transform duration-300 group-hover:scale-105">
-            <img 
+            <Image 
               src="/images/static/logo.png" 
               alt="FENG YI SPACE Logo" 
-              className="object-contain w-full h-full"
+              fill
+              className="object-contain"
             />
           </div>
           <span className="text-lg md:text-xl leading-none font-bold tracking-widest uppercase text-gray-900">

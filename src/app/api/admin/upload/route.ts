@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(await file.arrayBuffer());
     
     // Process image with Sharp
-    let processedBuffer: any = buffer;
+    let processedBuffer: Buffer = buffer;
     
     let ext = path.extname(file.name).toLowerCase();
     // Default to .jpg if no extension or if we want to normalize

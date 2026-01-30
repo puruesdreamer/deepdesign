@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Project } from "@/lib/data";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import projectsData from "@/data/projects.json";
 
@@ -99,9 +100,9 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
         {/* Navigation to Next Project (Optional but nice) */}
         <section className="container mx-auto px-6 md:px-12 lg:px-24 mt-24 pt-24 border-t border-gray-100 max-w-[1920px]">
            <div className="flex justify-between items-center">
-             <a href="/#works" className="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-full text-lg font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors">
+             <Link href="/#works" className="inline-flex items-center gap-2 bg-black text-white px-8 py-3 rounded-full text-lg font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors">
                ← Back to Works
-             </a>
+             </Link>
            </div>
         </section>
       </main>
