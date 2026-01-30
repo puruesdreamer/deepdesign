@@ -4,17 +4,18 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import projectsData from "@/data/projects.json";
 
-export const dynamic = 'force-dynamic';
-
-async function getProjects() {
-  return projectsData as Project[];
+export async function generateStaticParams() {
+  const projects = projectsData as Project[];
+  return projects.map((project) => ({
+    id: project.id.toString(),
+  }));
 }
 
 export default async function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
   // In Next.js 15+, params is a Promise
   const { id } = await params;
   
-  const projects = await getProjects();
+  const projects = projectsData as Project[];
   const project = projects.find((p) => p.id === parseInt(id));
 
   if (!project) {
