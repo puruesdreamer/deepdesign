@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Wind/如风",
+    "role": "founder/Operations Director/创始人/运营总监",
+    "image": "/images/uploads/team/9e2eccd5-8d74-46f7-932d-8f01e0f0dd95.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Jone/蒋奇肱",
+    "role": "Design Director/设计总监",
+    "image": "/images/uploads/team/f108302c-2055-4179-b0d6-5bfe5fc531cc.jpeg"
+  },
+  {
+    "id": 6,
+    "name": "He Aiqing/何爱青",
+    "role": "Deepening Designer/深化设计师",
+    "image": "/images/uploads/team/307b6b48-dd01-4ae6-a5c1-62ede17a0a7c.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Yu Chen/喻晨",
+    "role": "Chief Designer/首席设计师",
+    "image": "/images/uploads/team/550e72a9-5518-4b2b-b2c5-71e047a613ba.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Yu Jianbuo/余健波",
+    "role": "Interior finishing designer/硬装设计师",
+    "image": "/images/uploads/team/91f53a89-7a2c-4da3-b247-c8860c133a1b.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Li Siyao/李思瑶",
+    "role": "home furnishings designer/软装设计师",
+    "image": "/images/uploads/team/77a8b7af-6776-4a94-9ec6-b2bee5a90c66.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Cao Yanping曹延平",
+    "role": "Interior finishing designer/硬装设计师",
+    "image": "/images/uploads/team/b804c35c-f8de-40da-b541-e5a4e809a5ba.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Chen Xuanling/陈选良",
+    "role": "Deepening Designer/深化设计师",
+    "image": "/images/uploads/team/3e88defb-b0ff-4dc3-ab9f-a4f418f6a30b.jpg"
+  }
+]
