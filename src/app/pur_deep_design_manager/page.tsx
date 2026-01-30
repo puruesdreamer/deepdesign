@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Project } from '@/lib/data';
 import Image from 'next/image';
-import { Trash2, Plus, Upload, Save, X, Edit, Users, MessageSquare, LayoutGrid, GripVertical } from 'lucide-react';
+import { Trash2, Plus, Upload, Save, X, Edit, Users, MessageSquare, LayoutGrid, GripVertical, Eye, EyeOff } from 'lucide-react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable';
 import { SortableProjectItem } from '@/components/admin/SortableProjectItem';
@@ -32,6 +32,7 @@ export default function AdminPage() {
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
 
   const [projects, setProjects] = useState<Project[]>([]);
@@ -142,10 +143,10 @@ export default function AdminPage() {
         if (res.ok) {
             setIsAuthenticated(true);
         } else {
-            setLoginError('Password incorrect');
+            setLoginError('Password incorrect/密码错误');
         }
     } catch (e) {
-        setLoginError('Login failed');
+        setLoginError('Login failed/登录失败');
     }
   };
 
@@ -422,17 +423,45 @@ export default function AdminPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-80">
-          <h1 className="text-xl font-bold mb-4">Admin Login/管理员登录</h1>
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            className="w-full border p-2 rounded mb-4"
-            placeholder="Enter password/请输入密码"
-          />
-          {loginError && <p className="text-red-500 text-sm mb-4">{loginError}</p>}
-          <button type="submit" className="w-full bg-black text-white p-2 rounded">Login/登录</button>
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-80 space-y-6">
+          <h1 className="text-xl font-bold">Admin Login/管理员登录</h1>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                placeholder="Enter admin password"
+                autoFocus
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeOff size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            </div>
+          </div>
+          
+          {loginError && (
+            <p className="text-sm text-red-500 bg-red-50 px-4 py-3 rounded-lg border border-red-100">
+              {loginError}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+          >
+            Login / 登录
+          </button>
         </form>
       </div>
     );
