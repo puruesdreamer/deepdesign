@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowDown } from "lucide-react";
 import dynamic from 'next/dynamic';
 
