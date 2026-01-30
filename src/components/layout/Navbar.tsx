@@ -8,10 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { name: "首页", href: "/" },
-  { name: "作品展示", href: "/#works" },
-  { name: "关于我们", href: "/#about" },
-  { name: "联系我们", href: "/#contact" },
+  { name: "首页", enName: "HOME", href: "/" },
+  { name: "作品展示", enName: "WORKS", href: "/#works" },
+  { name: "关于我们", enName: "ABOUT", href: "/#about" },
+  { name: "联系我们", enName: "CONTACT", href: "/#contact" },
 ];
 
 export function Navbar() {
@@ -43,9 +43,14 @@ export function Navbar() {
               className="object-contain"
             />
           </div>
-          <span className="text-lg md:text-xl leading-none font-bold tracking-widest uppercase text-gray-900">
-            风翼空间
-          </span>
+          <div className="flex flex-col">
+            <span className="text-lg md:text-xl leading-none font-bold tracking-widest uppercase text-gray-900">
+              风翼空间
+            </span>
+            <span className="text-[0.6rem] md:text-xs leading-none font-medium tracking-[0.2em] uppercase text-gray-500 mt-1">
+              FENG YI SPACE
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Menu */}
@@ -54,9 +59,14 @@ export function Navbar() {
             <Link 
               key={link.name} 
               href={!isHome && link.href.startsWith("/#") ? "/" + link.href : link.href} 
-              className="text-base md:text-[1.2rem] font-bold tracking-widest hover:text-gray-500 transition-colors uppercase"
+              className="group flex flex-col items-center justify-center text-center"
             >
-              {link.name}
+              <span className="text-base md:text-[1.2rem] font-bold tracking-widest group-hover:text-gray-500 transition-colors uppercase">
+                {link.name}
+              </span>
+              <span className="text-[0.6rem] font-medium tracking-widest text-gray-400 group-hover:text-gray-600 transition-colors uppercase -mt-1">
+                {link.enName}
+              </span>
             </Link>
           ))}
         </div>
@@ -84,9 +94,10 @@ export function Navbar() {
                   key={link.name}
                   href={!isHome && link.href.startsWith("/#") ? "/" + link.href : link.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-base font-medium"
+                  className="text-base font-medium flex items-center gap-2"
                 >
-                  {link.name}
+                  <span>{link.name}</span>
+                  <span className="text-xs text-gray-400 uppercase tracking-widest">{link.enName}</span>
                 </Link>
               ))}
             </div>

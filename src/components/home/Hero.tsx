@@ -27,24 +27,26 @@ export function Hero() {
         </div>
         
         <div className="lg:col-span-5 flex flex-row justify-end items-start text-left gap-6 md:gap-10 lg:pt-0 ml-auto self-start scale-[0.8] origin-top-right">
-          <div className="flex flex-col gap-2 items-start text-left">
+          <div className="flex flex-col gap-2 items-start text-left max-w-[240px]">
             <span className="text-xs font-bold text-gray-900 border-b border-gray-900 w-4 pb-2 mb-2">01</span>
-            <h3 className="text-xs font-serif font-bold">Best Quality</h3>
-            <p className="text-xs text-gray-500 leading-relaxed max-w-[200px]"> 
-              根据用户需求,<br />
-              提供品质方案,<br />
-              创造溢价空间,<br />
-              打造专属定制
+            <h3 className="text-xs font-serif font-bold uppercase">Best Quality <span className="text-gray-500 font-sans font-normal ml-1">卓越品质</span></h3>
+            <p className="text-xs text-gray-500 leading-relaxed"> 
+              根据用户需求, 提供品质方案,<br />
+              创造溢价空间, 打造专属定制<br />
+              <span className="text-[10px] text-gray-400 mt-1 block leading-tight">
+                Based on user needs, providing quality solutions, creating premium value, crafting exclusive customization.
+              </span>
             </p>
           </div>
-          <div className="flex flex-col gap-2 items-start text-left">
+          <div className="flex flex-col gap-2 items-start text-left max-w-[240px]">
             <span className="text-xs font-bold text-gray-900 border-b border-gray-900 w-4 pb-2 mb-2">02</span>
-            <h3 className="text-xs font-serif font-bold">Warranty</h3> 
-            <p className="text-xs text-gray-500 leading-relaxed max-w-[200px]">
-              专业施工团队，<br />
-              全案供应链条，<br />
-              完善质量保障，<br />
-              让您全程无忧
+            <h3 className="text-xs font-serif font-bold uppercase">Warranty <span className="text-gray-500 font-sans font-normal ml-1">质量保证</span></h3> 
+            <p className="text-xs text-gray-500 leading-relaxed">
+              专业施工团队，全案供应链条，<br />
+              完善质量保障，让您全程无忧<br />
+              <span className="text-[10px] text-gray-400 mt-1 block leading-tight">
+                Professional construction team, full supply chain, complete quality assurance, ensuring peace of mind.
+              </span>
             </p>
           </div>
         </div>
@@ -68,15 +70,15 @@ export function Hero() {
         {/* Floating Card - Overlapping Bottom Center (Crossing both images) */}
         <div className="absolute -bottom-9 left-[72%] -translate-x-[65%] z-40 bg-[#3d3f3a] text-white p-8 md:p-12 w-full md:max-w-sm shadow-2xl -mb-[50px] scale-[0.8] origin-bottom">
            <p className="text-[20px] tracking-widest uppercase text-gray-400 mb-4">Our Works</p>
-           <h2 className="text-lg font-serif mb-4">WHAT CAN WE DO?</h2> 
+           <h2 className="text-lg font-serif mb-4">WHAT CAN WE DO? <br/><span className="text-sm font-sans text-gray-400 font-normal">我们能做什么？</span></h2> 
            <p className="text-gray-400 text-sm leading-relaxed mb-1">
-             酒店空间<br />
-             别墅豪宅<br />
-             商业会所<br />
-             会议办公<br />
-             地产样板
+             酒店空间 Hotel Space<br />
+             别墅豪宅 Luxury Villa<br />
+             商业会所 Commercial Club<br />
+             会议办公 Conference Office<br />
+             地产样板 Real Estate Model
            </p>
-           <h2 className="inline-flex items-center text-sm font-bold tracking-widest text-white transition-colors uppercase border-b border-gray-500 pb-1">
+           <h2 className="inline-flex items-center text-sm font-bold tracking-widest text-white transition-colors uppercase border-b border-gray-500 pb-1 mt-4">
              View Project
            </h2>
         </div>
