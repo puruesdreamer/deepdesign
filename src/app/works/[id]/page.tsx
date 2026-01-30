@@ -4,8 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import projectsData from "@/data/projects.json";
 
-export async function generateStaticParams() {
-  const projects = projectsData as Project[];
+export async function generateStaticParams() { projects = projectsData as Project[];
   return projects.map((project) => ({
     id: project.id.toString(),
   }));
