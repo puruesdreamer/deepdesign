@@ -3,21 +3,13 @@ import { Hero } from "@/components/home/Hero";
 import { Portfolio } from "@/components/home/Portfolio";
 import { About } from "@/components/home/About";
 import { Contact } from "@/components/home/Contact";
-import fs from 'fs';
-import path from 'path';
-
-async function getProjects() {
-  const filePath = path.join(process.cwd(), 'src/data/projects.json');
-  try {
-    const fileContent = await fs.promises.readFile(filePath, 'utf8');
-    return JSON.parse(fileContent);
-  } catch (e) {
-    console.error('Failed to load projects', e);
-    return [];
-  }
-}
+import projectsData from "@/data/projects.json";
 
 export const dynamic = 'force-dynamic';
+
+async function getProjects() {
+  return projectsData;
+}
 
 export default async function Home() {
   const projects = await getProjects();

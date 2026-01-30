@@ -2,20 +2,12 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Project } from "@/lib/data";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import fs from 'fs';
-import path from 'path';
+import projectsData from "@/data/projects.json";
 
 export const dynamic = 'force-dynamic';
 
 async function getProjects() {
-  const filePath = path.join(process.cwd(), 'src/data/projects.json');
-  try {
-    const fileContent = await fs.promises.readFile(filePath, 'utf8');
-    return JSON.parse(fileContent) as Project[];
-  } catch (e) {
-    console.error('Failed to load projects', e);
-    return [];
-  }
+  return projectsData as Project[];
 }
 
 export default async function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
