@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Deep Design - Interior Design Portfolio
 
-## Getting Started
+A modern, responsive interior design portfolio website built with **Next.js**, **Tailwind CSS**, and **Framer Motion**.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Dynamic Project Showcase**: Filterable portfolio grid displaying projects by category (Hotel, Villa, Apartment, etc.).
+- **Smooth Animations**: Elegant page transitions and scroll effects powered by Framer Motion.
+- **Responsive Design**: Fully optimized for desktops, tablets, and mobile devices.
+- **Admin Dashboard**: Secure backend interface for managing projects, team members, and messages.
+- **Image Optimization**: Automatic image resizing and format conversion using Next.js Image.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18.17 or later
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/puruesdreamer/deepdesign.git
+   cd deepdesign
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. **Open in browser**
+   Visit [http://localhost:3000](http://localhost:3000) to see the application.
+
+## 📂 Project Structure
+
+```
+src/
+├── app/                 # Next.js App Router pages
+│   ├── api/             # Backend API routes
+│   ├── works/           # Project detail pages
+│   └── admin/           # Admin dashboard (protected)
+├── components/          # Reusable UI components
+│   ├── home/            # Homepage sections (Hero, Portfolio, etc.)
+│   ├── layout/          # Layout components (Navbar, Footer)
+│   └── admin/           # Admin-specific components
+├── data/                # JSON data files (projects, team, messages)
+└── lib/                 # Utility functions and shared logic
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔐 Admin Access
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The project includes a hidden admin dashboard for content management. 
+- **Path**: `/pur_deep_design_manager`
+- **Default Password**: (Check `src/app/pur_deep_design_manager/page.tsx` or contact admin)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚢 Deployment
 
-## Learn More
+This project is configured for seamless deployment on **Vercel**.
 
-To learn more about Next.js, take a look at the following resources:
+### Vercel Deployment (Recommended)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push your code to GitHub.
+2. Log in to [Vercel](https://vercel.com/) and click **"Add New Project"**.
+3. Import your `deepdesign` repository.
+4. Click **Deploy**. Vercel will automatically detect the Next.js configuration and build the site.
+5. Your site will be live at `https://your-project-name.vercel.app`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Automatic Deployment
 
-## Deploy on Vercel
+Whenever you push changes to the `main` branch, Vercel will automatically trigger a new deployment.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+© 2026 Feng Yi Space Design. All Rights Reserved.
