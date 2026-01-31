@@ -51,7 +51,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
             
             {/* Left Column: Text */}
-            <div className="lg:col-span-4 flex flex-col gap-8 sticky top-32 self-start">
+            <div className="lg:col-span-4 flex flex-col gap-8 lg:sticky lg:top-32 lg:self-start">
               <div>
                 <h3 className="text-lg font-bold uppercase tracking-widest mb-4">项目简介</h3>
                 <p className="text-gray-600 leading-relaxed text-lg whitespace-pre-line">
