@@ -1,14 +1,14 @@
 # Deploy to GitHub and Aliyun
 Write-Host "Starting deployment..."
 
-# Push to GitHub
+# Push to GitHub (uses default SSH key)
 Write-Host "Pushing to GitHub..."
 git push origin main
 
-# Push to Aliyun
+# Push to Aliyun (uses specific PEM key)
 Write-Host "Pushing to Aliyun..."
-git push aliyun main
+# Use git -c to specify the SSH command for this operation only
+git -c core.sshCommand="ssh -i H:/demo/deepdesign密钥对.pem" push aliyun main
 
 Write-Host "Deployment trigger sent to Aliyun."
-Write-Host "Note: If the Aliyun server has a post-receive hook, it should update automatically."
-Write-Host "If images are still missing on Aliyun, ensure the server has run 'npm run build' and 'pm2 restart deepdesign'."
+Write-Host "The server post-receive hook will handle the build and restart."

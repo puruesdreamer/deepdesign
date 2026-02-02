@@ -3,10 +3,12 @@ import { Project } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import projectsData from "@/data/projects.json";
+import { getProjects, getProjectById } from "@/lib/project-utils";
+
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
-  const projects = projectsData as Project[];
+  const projects = getProjects();
   return projects.map((project) => ({
     id: project.id.toString(),
   }));
@@ -16,8 +18,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
   // In Next.js 15+, params is a Promise
   const { id } = await params;
   
-  const projects = projectsData as Project[];
-  const project = projects.find((p) => p.id === parseInt(id));
+  const project = getProjectById(parseInt(id));
 
   if (!project) {
     notFound();

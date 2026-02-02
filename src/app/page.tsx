@@ -3,13 +3,9 @@ import { Hero } from "@/components/home/Hero";
 import { Portfolio } from "@/components/home/Portfolio";
 import { About } from "@/components/home/About";
 import { Contact } from "@/components/home/Contact";
-import projectsData from "@/data/projects.json";
+import { getProjects } from "@/lib/project-utils";
 
 export const dynamic = 'force-dynamic';
-
-async function getProjects() {
-  return projectsData;
-}
 
 export default async function Home() {
   const projects = await getProjects();
