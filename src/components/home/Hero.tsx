@@ -58,7 +58,7 @@ export function Hero() {
         {/* Main Large Image (Left) */}
         <div className="relative w-full md:w-[72%] h-full bg-gray-100 group overflow-hidden border-1 border-black">
            <Image 
-            src="/images/static/first001.png?v=2"
+            src="/images/static/first001.png"
             alt="Architectural Detail"
              fill
              className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -86,7 +86,7 @@ export function Hero() {
         {/* Secondary Narrow Image (Right) */}
         <div className="relative w-full md:w-[28%] h-full bg-gray-100 group overflow-hidden hidden md:block border-2 border-black">
            <Image 
-            src="/images/static/first002.png?v=2"
+            src="/images/static/first002.png"
             alt="Modern Building Sky"
              fill
              className="object-cover transition-transform duration-700 group-hover:scale-105"
