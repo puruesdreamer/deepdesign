@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
         pathname: '/images/static/**',
         // search: '?*', // Removed to be permissive
       },
+      {
+        pathname: '/images/uploads/**',
+      },
     ],
     remotePatterns: [
       {
