@@ -11,10 +11,11 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', 'framer-motion', '@tsparticles/react', '@tsparticles/slim'],
   },
   images: {
-    formats: ['image/avif', 'image/webp'],
+    unoptimized: true,
     localPatterns: [
       {
-        pathname: '/images/**',
+        pathname: '/images/static/**',
+        search: '?*',
       },
     ],
     remotePatterns: [
