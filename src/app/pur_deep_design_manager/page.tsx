@@ -107,7 +107,27 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    setLoading(false);
+    const checkAuth = async () => {
+      const savedPassword = localStorage.getItem('admin_password');
+      if (savedPassword) {
+        setPassword(savedPassword);
+        try {
+          const res = await fetch('/api/admin/messages', {
+            headers: { 'Authorization': savedPassword }
+          });
+          if (res.ok) {
+            setIsAuthenticated(true);
+          } else {
+            localStorage.removeItem('admin_password');
+          }
+        } catch (e) {
+          // Network error or other issue, keep loading false
+        }
+      }
+      setLoading(false);
+    };
+    
+    checkAuth();
   }, []);
 
   useEffect(() => {
@@ -142,6 +162,7 @@ export default function AdminPage() {
 
         if (res.ok) {
             setIsAuthenticated(true);
+            localStorage.setItem('admin_password', password);
         } else {
             setLoginError('Password incorrect/密码错误');
         }
