@@ -5,7 +5,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProjects, getProjectById } from "@/lib/project-utils";
 
-export const dynamic = 'force-dynamic';
+// Use revalidate = 0 to ensure fresh data on Aliyun (runtime updates)
+// while keeping Vercel happy with generateStaticParams
+export const revalidate = 0;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
