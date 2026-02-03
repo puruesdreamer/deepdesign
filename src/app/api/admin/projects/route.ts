@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { isAuthenticated, unauthorizedResponse } from '@/lib/auth';
 
-const dataFilePath = path.join(process.cwd(), 'src/data/projects.json');
+const dataFilePath = path.join(process.cwd(), 'src/data/projects_db.json');
 
 export async function GET() {
   try {

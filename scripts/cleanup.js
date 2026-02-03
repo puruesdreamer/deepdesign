@@ -4,7 +4,7 @@ const path = require('path');
 
 const publicDir = path.join(process.cwd(), 'public');
 const uploadsDir = path.join(publicDir, 'images', 'uploads');
-const projectsFile = path.join(process.cwd(), 'src/data/projects.json');
+const projectsFile = path.join(process.cwd(), 'src/data/projects_db.json');
 const teamFile = path.join(process.cwd(), 'src/data/team.json');
 
 // Collect all used images

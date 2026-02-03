@@ -1,4 +1,4 @@
-import projectsData from '@/data/projects.json';
+import projectsData from '@/data/projects_db.json';
 
 export interface Project {
   id: number;

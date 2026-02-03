@@ -12,7 +12,7 @@ export function getProjects(): Project[] {
 
   // 2. Try to read from file system (Enable runtime updates for self-hosted/AliYun)
   try {
-    const dataFilePath = path.join(process.cwd(), 'src/data/projects.json');
+    const dataFilePath = path.join(process.cwd(), 'src/data/projects_db.json');
     // Only attempt FS read if we are likely in a Node environment that has the source files
     if (fs.existsSync(dataFilePath)) {
       const fileContent = fs.readFileSync(dataFilePath, 'utf8');
