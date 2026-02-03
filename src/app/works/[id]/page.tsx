@@ -21,9 +21,12 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
   // In Next.js 15+, params is a Promise
   const { id } = await params;
   
+  console.log(`[ProjectDetail] Requested ID: ${id}`);
   const project = getProjectById(id);
+  console.log(`[ProjectDetail] Found Project:`, project ? project.title : 'None');
 
   if (!project) {
+    console.error(`[ProjectDetail] Project not found for ID: ${id}`);
     notFound();
   }
 
