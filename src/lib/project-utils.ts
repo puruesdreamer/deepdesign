@@ -6,6 +6,12 @@ import projectsData from '@/data/projects.json';
 const dataFilePath = path.join(process.cwd(), 'src/data/projects.json');
 
 export function getProjects(): Project[] {
+  // On Vercel, always use the static data bundled with the build
+  // This avoids issues with reading files from the serverless filesystem
+  if (process.env.VERCEL) {
+    return projectsData as Project[];
+  }
+
   try {
     // Check if file exists
     if (!fs.existsSync(dataFilePath)) {
