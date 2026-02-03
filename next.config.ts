@@ -4,10 +4,9 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   compress: true,
   poweredByHeader: false,
-  trailingSlash: false,
-  // compiler: {
-  //   removeConsole: process.env.NODE_ENV === "production",
-  // },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', '@tsparticles/react', '@tsparticles/slim'],
   },

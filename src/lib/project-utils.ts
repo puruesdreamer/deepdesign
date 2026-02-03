@@ -7,7 +7,6 @@ export function getProjects(): Project[] {
   // 1. Force static data on Vercel to avoid ephemeral FS issues
   // VERCEL env var is set to "1" in Vercel environment
   if (process.env.VERCEL) {
-    console.log('[getProjects] Vercel environment detected, using static data. Count:', staticProjects.length);
     return staticProjects;
   }
 
