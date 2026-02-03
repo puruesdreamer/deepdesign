@@ -83,12 +83,14 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
             {/* Right Column: Images */}
             <div className="lg:col-span-8 flex flex-col gap-8 md:gap-12">
               {project.images?.map((img, index) => (
-                <div key={index} className="relative w-full aspect-[4/3] bg-gray-100">
+                <div key={index} className="relative w-full bg-gray-50">
                   <Image
                     src={img}
                     alt={`${project.title} - View ${index + 1}`}
-                    fill
-                    className="object-cover"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="w-full h-auto"
                     priority={index === 0}
                   />
                 </div>

@@ -73,8 +73,8 @@ export async function POST(request: Request) {
                     wmWidth = Math.max(Math.floor(currentMeta.width * 0.21), 50);
                }
 
-               // Position: Bottom (20% from bottom)
-               const marginBottom = Math.floor(currentMeta.height * 0.2);
+               // Position: Bottom (15% from bottom, max 200px)
+               const marginBottom = Math.min(Math.floor(currentMeta.height * 0.15), 200);
 
                try {
                    // 1. Resize Watermark & Apply Opacity
@@ -97,8 +97,8 @@ export async function POST(request: Request) {
                        .toBuffer();
 
                    // 2. Create White Strip (10% opacity)
-                   // Height = Watermark Height * 1.2 (for padding) (在此处调整白条高度倍数)
-                   const stripHeight = Math.floor(wmHeight * 1.2);
+                   // Height = Watermark Height * 1.5 (more padding for vertical images)
+                   const stripHeight = Math.floor(wmHeight * 1.5);
                    const stripBuffer = await sharp({
                        create: {
                            width: currentMeta.width,
