@@ -8,6 +8,13 @@ import { getProjects, getProjectById } from "@/lib/project-utils";
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
+export async function generateStaticParams() {
+  const projects = getProjects();
+  return projects.map((project) => ({
+    id: project.id.toString(),
+  }));
+}
+
 export default async function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
   // In Next.js 15+, params is a Promise
   const { id } = await params;
