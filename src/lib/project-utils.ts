@@ -6,25 +6,27 @@ import projectsData from '@/data/projects.json';
 const dataFilePath = path.join(process.cwd(), 'src/data/projects.json');
 
 export function getProjects(): Project[] {
-  // On Vercel, always use the static data bundled with the build
-  // This avoids issues with reading files from the serverless filesystem
-  if (process.env.VERCEL) {
-    return projectsData as Project[];
-  }
-
+  // 1. Try to read from file system (Enable runtime updates for self-hosted/AliYun)
   try {
-    // Check if file exists
-    if (!fs.existsSync(dataFilePath)) {
-      console.warn(`Data file not found at: ${dataFilePath}, falling back to static data.`);
-      return projectsData as Project[];
+    const dataFilePath = path.join(process.cwd(), 'src/data/projects.json');
+    // Only attempt FS read if we are likely in a Node environment that has the source files
+    // In Vercel serverless, src/data might not exist or be accessible in the same way
+    if (fs.existsSync(dataFilePath)) {
+      const fileContent = fs.readFileSync(dataFilePath, 'utf8');
+      const data = JSON.parse(fileContent);
+      if (Array.isArray(data) && data.length > 0) {
+        return data as Project[];
+      }
     }
-
-    const fileContent = fs.readFileSync(dataFilePath, 'utf8');
-    return JSON.parse(fileContent) as Project[];
   } catch (error) {
-    console.error('Failed to read projects data, falling back to static data:', error);
-    return projectsData as Project[];
+    // Silently fail on FS errors and fall back to static data
+    // This is expected behavior on Vercel or when file access fails
+    console.warn('Runtime data access failed, using static build data.');
   }
+
+  // 2. Fallback to static data (Bundled at build time)
+  // This ensures Vercel always has data even if FS access fails
+  return projectsData as Project[];
 }
 
 export function getProjectById(id: number): Project | undefined {
