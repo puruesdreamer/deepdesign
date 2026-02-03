@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { getProjects, getProjectById } from "@/lib/project-utils";
 
 export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const projects = getProjects();
@@ -18,7 +19,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
   // In Next.js 15+, params is a Promise
   const { id } = await params;
   
-  const project = getProjectById(parseInt(id));
+  const project = getProjectById(id);
 
   if (!project) {
     notFound();
