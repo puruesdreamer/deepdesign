@@ -52,9 +52,11 @@ export async function POST(request: Request) {
       }
 
       // --- Watermark Logic Start ---
-      const watermarkPath = path.join(process.cwd(), 'public', 'images', 'static', 'watermark.png');
-      if (fs.existsSync(watermarkPath)) {
-          // Commit current changes (resize) to get accurate dimensions for watermark scaling
+      // Skip watermark for team photos
+      if (folder !== 'team') {
+          const watermarkPath = path.join(process.cwd(), 'public', 'images', 'static', 'watermark.png');
+          if (fs.existsSync(watermarkPath)) {
+              // Commit current changes (resize) to get accurate dimensions for watermark scaling
           const currentBuffer = await image.toBuffer();
           image = sharp(currentBuffer);
           const currentMeta = await image.metadata();
@@ -143,6 +145,7 @@ export async function POST(request: Request) {
                   // Continue without watermark if it fails
               }
           }
+      }
       }
       // --- Watermark Logic End ---
 

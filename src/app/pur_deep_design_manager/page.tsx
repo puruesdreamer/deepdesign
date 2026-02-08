@@ -47,6 +47,8 @@ export default function AdminPage() {
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [isNewMember, setIsNewMember] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<TeamMember | null>(null);
+  const [showPhotoDeleteConfirm, setShowPhotoDeleteConfirm] = useState(false);
+  const [memberImagesPendingDeletion, setMemberImagesPendingDeletion] = useState<string[]>([]);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedMessages, setSelectedMessages] = useState<number[]>([]);
@@ -378,8 +380,21 @@ export default function AdminPage() {
     }
 
     await saveTeam(newTeam);
+
+    // Process pending deletions
+    if (memberImagesPendingDeletion.length > 0) {
+        await Promise.all(memberImagesPendingDeletion.map(url => 
+            fetch('/api/admin/upload', {
+                method: 'DELETE',
+                headers: getHeaders(),
+                body: JSON.stringify({ url })
+            }).catch(e => console.error(e))
+        ));
+    }
+
     setEditingMember(null);
     setIsNewMember(false);
+    setMemberImagesPendingDeletion([]);
   };
 
   const saveTeam = async (data: TeamMember[]) => {
@@ -430,11 +445,7 @@ export default function AdminPage() {
     const url = await uploadFile(file, 'team');
     if (url) {
       if (editingMember.image && editingMember.image.startsWith('/images/uploads')) {
-         fetch('/api/admin/upload', {
-           method: 'DELETE',
-           headers: getHeaders(),
-           body: JSON.stringify({ url: editingMember.image })
-         });
+         setMemberImagesPendingDeletion(prev => [...prev, editingMember.image]);
       }
       setEditingMember({ ...editingMember, image: url });
     }
@@ -701,9 +712,29 @@ export default function AdminPage() {
                   <div>
                     <label className="block text-sm font-bold mb-2">Photo/照片</label>
                     <div className="flex items-center gap-4">
-                      <div className="relative w-24 h-24 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="relative w-24 h-24 bg-gray-100 rounded-md overflow-hidden group">
                         {editingMember.image ? (
-                          <Image src={editingMember.image} alt="" fill className="object-cover" />
+                          <>
+                            {/* Use standard img tag for immediate feedback on new uploads to bypass Next.js optimization cache issues */}
+                            <img 
+                              src={editingMember.image} 
+                              alt="" 
+                              className="w-full h-full object-cover" 
+                            />
+                            <button
+                              type="button"
+                              onPointerDown={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setShowPhotoDeleteConfirm(true);
+                              }}
+                              className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 z-10 transition-opacity"
+                              title="Remove Photo"
+                            >
+                              <X size={12} />
+                            </button>
+                          </>
                         ) : (
                           <div className="flex items-center justify-center h-full text-gray-300"><Users /></div>
                         )}
@@ -717,16 +748,34 @@ export default function AdminPage() {
 
                   <div className="flex justify-end gap-4 pt-4 border-t">
                     <button type="button" onClick={async () => {
-                      if (isNewMember && editingMember?.image?.startsWith('/images/uploads')) {
+                      // If we are cancelling, we need to clean up any NEWLY uploaded images that are not being saved.
+                      // If isNewMember, editingMember.image is new if it exists.
+                      // If existing member, editingMember.image is new if it's different from the original image.
+                      
+                      let imageToDelete = '';
+                      if (isNewMember) {
+                          if (editingMember?.image?.startsWith('/images/uploads')) {
+                              imageToDelete = editingMember.image;
+                          }
+                      } else {
+                          const original = team.find(m => m.id === editingMember?.id);
+                          if (original && editingMember?.image !== original.image && editingMember?.image?.startsWith('/images/uploads')) {
+                              imageToDelete = editingMember.image;
+                          }
+                      }
+
+                      if (imageToDelete) {
                          try {
                            await fetch('/api/admin/upload', {
                              method: 'DELETE',
                              headers: getHeaders(),
-                             body: JSON.stringify({ url: editingMember.image })
+                             body: JSON.stringify({ url: imageToDelete })
                            });
                          } catch (e) {}
                       }
+                      
                       setEditingMember(null);
+                      setMemberImagesPendingDeletion([]); // Discard any pending deletions of original images
                     }} className="px-6 py-2 rounded text-gray-600 hover:bg-gray-100">Cancel/取消</button>
                     <button type="submit" className="px-6 py-2 rounded bg-black text-white">Save Member/保存成员</button>
                   </div>
@@ -747,6 +796,37 @@ export default function AdminPage() {
                   </div>
                 </SortableContext>
               </DndContext>
+            )}
+
+             {showPhotoDeleteConfirm && editingMember && (
+               <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60]" onClick={(e) => e.stopPropagation()}>
+                 <div className="bg-white p-6 rounded-lg max-w-sm w-full mx-4" onClick={(e) => e.stopPropagation()}>
+                   <h3 className="font-bold text-lg mb-2">Delete Photo/删除照片?</h3>
+                   <p className="text-gray-600 mb-6">Are you sure you want to remove this photo? / 确定要删除这张照片吗？</p>
+                   <div className="flex justify-end gap-3">
+                     <button 
+                        type="button"
+                        onClick={() => setShowPhotoDeleteConfirm(false)} 
+                        className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+                     >
+                        Cancel/取消
+                     </button>
+                     <button 
+                        type="button"
+                        onClick={async () => {
+                            if (editingMember.image.startsWith('/images/uploads')) {
+                                setMemberImagesPendingDeletion(prev => [...prev, editingMember.image]);
+                            }
+                            setEditingMember({ ...editingMember, image: '' });
+                            setShowPhotoDeleteConfirm(false);
+                        }} 
+                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                     >
+                        Delete/删除
+                     </button>
+                   </div>
+                 </div>
+               </div>
             )}
 
              {memberToDelete && (

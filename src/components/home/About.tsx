@@ -36,12 +36,18 @@ export function About() {
           {team.map((designer) => (
             <div key={designer.id} className="flex flex-col gap-4">
               <div className="relative aspect-[3/4] overflow-hidden bg-gray-200">
-                <Image
-                  src={designer.image}
-                  alt={designer.name}
-                  fill
-                  className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                />
+                {designer.image ? (
+                  <Image
+                    src={designer.image}
+                    alt={designer.name}
+                    fill
+                    className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300">
+                    {/* Placeholder or blank */}
+                  </div>
+                )}
               </div>
               <div>
                 <h3 className="text-xs font-bold">{designer.name}</h3>  
