@@ -95,6 +95,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
                     sizes="100vw"
                     className="w-full h-auto"
                     priority={index === 0}
+                    unoptimized
                   />
                 </div>
               ))}

@@ -29,7 +29,7 @@ export function SortableImageItem({ url, onRemove }: SortableImageItemProps) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="relative aspect-video group bg-gray-100 rounded overflow-hidden cursor-move touch-none">
-      <Image src={url} alt="" fill className="object-cover pointer-events-none" />
+      <Image src={url} alt="" fill className="object-cover pointer-events-none" unoptimized />
       <button 
         type="button" 
         onPointerDown={(e) => e.stopPropagation()}

@@ -41,7 +41,7 @@ export function SortableTeamItem({ member, onEdit, onDelete }: SortableTeamItemP
           <GripVertical size={20} />
        </div>
       <div className="relative w-16 h-16 bg-gray-100 rounded-md overflow-hidden shrink-0">
-        {member.image && <Image src={member.image} alt="" fill className="object-cover" />}
+        {member.image && <Image src={member.image} alt="" fill className="object-cover" unoptimized />}
       </div>
       <div className="flex-1">
         <h3 className="font-bold text-lg">{member.name}</h3>
