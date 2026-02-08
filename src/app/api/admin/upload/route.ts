@@ -164,16 +164,36 @@ export async function POST(request: Request) {
 
     // Generate UUID filename
     const filename = `${uuidv4()}${ext}`;
-    // Construct path: public/images/uploads/{folder}
-    const uploadDir = path.join(process.cwd(), 'public/images/uploads', folder);
-
-    // Ensure directory exists
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    
+    // Determine save targets to ensure both immediate availability and persistence
+    const targets: string[] = [];
+    
+    // 1. Current serving directory (Essential for immediate view)
+    const currentUploadDir = path.join(process.cwd(), 'public/images/uploads', folder);
+    targets.push(currentUploadDir);
+    
+    // 2. Project root directory (Essential for persistence if running in Standalone mode)
+    // In standalone mode, process.cwd() is usually .next/standalone, so root is ../../
+    const potentialRootDir = path.resolve(process.cwd(), '../../');
+    const potentialRootPublicDir = path.join(potentialRootDir, 'public/images/uploads', folder);
+    
+    // Only add potential root if it's different and looks like a valid project root (has package.json)
+    if (currentUploadDir !== potentialRootPublicDir && fs.existsSync(path.join(potentialRootDir, 'package.json'))) {
+        targets.push(potentialRootPublicDir);
+        console.log(`[Upload] Detected Standalone mode. Adding persistence target: ${potentialRootPublicDir}`);
     }
 
-    const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, processedBuffer);
+    // Save to all targets
+    for (const dir of targets) {
+        // Ensure directory exists
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        
+        const filePath = path.join(dir, filename);
+        await writeFile(filePath, processedBuffer);
+        console.log(`[Upload] Saved file to: ${filePath}`);
+    }
 
     return NextResponse.json({ url: `/images/uploads/${folder}/${filename}` });
   } catch (error) {
