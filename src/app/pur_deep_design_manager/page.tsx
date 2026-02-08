@@ -300,7 +300,7 @@ export default function AdminPage() {
             
             for (const file of pendingFiles) {
                 const url = await uploadFile(file, folderName);
-                if (url) newUrls.push(url);
+                if (url) newUrls.push(`${url}?t=${Date.now()}`);
             }
             
             projectToUpdate.images = [...projectToUpdate.images, ...newUrls];
@@ -413,23 +413,35 @@ export default function AdminPage() {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('folder', folder);
-    const res = await fetch('/api/admin/upload', { 
-        method: 'POST', 
-        headers: { 'Authorization': password },
-        body: formData 
-    });
-    const data = await res.json();
-    if (data.error) {
-      alert(data.error);
-      return null;
+    
+    try {
+        const res = await fetch('/api/admin/upload', { 
+            method: 'POST', 
+            headers: { 'Authorization': password },
+            body: formData 
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok || data.error) {
+          const errorDetails = data.details ? `\nDetails:\n${data.details.join('\n')}` : '';
+          const cwdInfo = data.cwd ? `\nServer CWD: ${data.cwd}` : '';
+          alert(`Upload Failed: ${data.error || 'Unknown error'}${errorDetails}${cwdInfo}`);
+          return null;
+        }
+        
+        return data.url;
+    } catch (e: any) {
+        alert(`Network Error during upload: ${e.message}`);
+        return null;
     }
-    return data.url;
   };
 
-  const handleProjectImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProjectImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || !editingProject) return;
     
+    // Show loading state if needed, or just process
     const newFiles = Array.from(files);
     setPendingFiles(prev => [...prev, ...newFiles]);
     e.target.value = '';
@@ -447,7 +459,8 @@ export default function AdminPage() {
       if (editingMember.image && editingMember.image.startsWith('/images/uploads')) {
          setMemberImagesPendingDeletion(prev => [...prev, editingMember.image]);
       }
-      setEditingMember({ ...editingMember, image: url });
+      // Add timestamp to prevent caching issues / 添加时间戳防止缓存问题
+      setEditingMember({ ...editingMember, image: `${url}?t=${Date.now()}` });
     }
     e.target.value = '';
   };

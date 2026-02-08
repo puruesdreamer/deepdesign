@@ -40,7 +40,7 @@ export function SortableTeamItem({ member, onEdit, onDelete }: SortableTeamItemP
        <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-gray-400 hover:bg-gray-100 p-1 rounded self-center">
           <GripVertical size={20} />
        </div>
-      <div className="relative w-16 h-16 bg-gray-100 rounded-full overflow-hidden shrink-0">
+      <div className="relative w-16 h-16 bg-gray-100 rounded-md overflow-hidden shrink-0">
         {member.image && <Image src={member.image} alt="" fill className="object-cover" />}
       </div>
       <div className="flex-1">

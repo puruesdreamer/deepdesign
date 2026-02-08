@@ -183,24 +183,33 @@ export async function POST(request: Request) {
     targets.add(path.resolve(process.cwd(), '../../public/images/uploads', folder));
 
     // Save to all targets
+    let savedCount = 0;
+    const errors: string[] = [];
+
     for (const dir of Array.from(targets)) {
         try {
             // Ensure directory exists
             if (!fs.existsSync(dir)) {
-                // Only create if the parent 'public' exists, to avoid creating garbage directories
-                // But for 'uploads' inside public, we should probably just create it.
-                // To be safe, we check if the path looks like it belongs to a valid public folder structure
-                // or just force it. For now, force recursive creation is safest to ensure it works.
                 fs.mkdirSync(dir, { recursive: true });
             }
             
             const filePath = path.join(dir, filename);
             await writeFile(filePath, processedBuffer);
             console.log(`[Upload] Saved file to: ${filePath}`);
-        } catch (err) {
+            savedCount++;
+        } catch (err: any) {
             console.error(`[Upload] Failed to save to target ${dir}:`, err);
-            // Continue to next target even if one fails
+            errors.push(`${dir}: ${err.message}`);
         }
+    }
+
+    if (savedCount === 0) {
+        return NextResponse.json({ 
+            error: 'Failed to save file to any target', 
+            details: errors,
+            cwd: process.cwd(),
+            targets: Array.from(targets)
+        }, { status: 500 });
     }
 
     return NextResponse.json({ url: `/images/uploads/${folder}/${filename}` });

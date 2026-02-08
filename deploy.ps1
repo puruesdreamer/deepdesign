@@ -4,6 +4,35 @@ param (
 
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
+# Configure SSH Key for passwordless deployment
+$KeyFile = Join-Path $PSScriptRoot "key.pem"
+if (Test-Path $KeyFile) {
+    Write-Host "Found deployment key: $KeyFile" -ForegroundColor Cyan
+    
+    # Attempt to secure the key permissions (SSH requires strict permissions)
+    try {
+        $acl = Get-Acl $KeyFile
+        # Check if we need to fix permissions (simplified check)
+        # We just try to reset it to be safe. 
+        # Note: SetAccessRuleProtection($true, $false) removes inheritance and clears existing rules
+        $acl.SetAccessRuleProtection($true, $false) 
+        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule($env:USERNAME,"FullControl","Allow")
+        $acl.AddAccessRule($rule)
+        Set-Acl $KeyFile $acl
+        Write-Host "Key permissions secured." -ForegroundColor Green
+    } catch {
+        Write-Host "Note: Could not automatically update key permissions. If deployment fails, ensure only you have access to key.pem." -ForegroundColor Yellow
+    }
+
+    # Set GIT_SSH_COMMAND to use the key
+    # -i: Identity file
+    # -o StrictHostKeyChecking=no: Avoid prompt for new host
+    # -o IdentitiesOnly=yes: Force use of this key
+    $env:GIT_SSH_COMMAND = "ssh -i `"$KeyFile`" -o StrictHostKeyChecking=no -o IdentitiesOnly=yes"
+} else {
+    Write-Host "Warning: key.pem not found. You may be asked for a password." -ForegroundColor Yellow
+}
+
 Write-Host "==========================================" -ForegroundColor Cyan
 Write-Host "      DeepDesign One-Click Deploy" -ForegroundColor Cyan
 Write-Host "==========================================" -ForegroundColor Cyan
