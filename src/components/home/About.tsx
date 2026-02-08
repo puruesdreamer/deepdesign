@@ -42,6 +42,7 @@ export function About() {
                     alt={designer.name}
                     fill
                     className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    unoptimized
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300">
