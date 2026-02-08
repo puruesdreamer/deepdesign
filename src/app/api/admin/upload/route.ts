@@ -169,33 +169,38 @@ export async function POST(request: Request) {
     const filename = `${uuidv4()}${ext}`;
     
     // Determine save targets to ensure both immediate availability and persistence
-    const targets: string[] = [];
+    const targets = new Set<string>();
     
-    // 1. Current serving directory (Essential for immediate view)
-    const currentUploadDir = path.join(process.cwd(), 'public/images/uploads', folder);
-    targets.push(currentUploadDir);
+    // 1. Standard public dir relative to CWD (Common for dev and some prod setups)
+    targets.add(path.resolve(process.cwd(), 'public/images/uploads', folder));
     
-    // 2. Project root directory (Essential for persistence if running in Standalone mode)
+    // 2. Standalone public dir relative to CWD (If running from root but serving standalone)
+    // This is often where the standalone server looks for static files if started from project root
+    targets.add(path.resolve(process.cwd(), '.next/standalone/public/images/uploads', folder));
+
+    // 3. Project root public dir (If running inside .next/standalone)
     // In standalone mode, process.cwd() is usually .next/standalone, so root is ../../
-    const potentialRootDir = path.resolve(process.cwd(), '../../');
-    const potentialRootPublicDir = path.join(potentialRootDir, 'public/images/uploads', folder);
-    
-    // Only add potential root if it's different and looks like a valid project root (has package.json)
-    if (currentUploadDir !== potentialRootPublicDir && fs.existsSync(path.join(potentialRootDir, 'package.json'))) {
-        targets.push(potentialRootPublicDir);
-        console.log(`[Upload] Detected Standalone mode. Adding persistence target: ${potentialRootPublicDir}`);
-    }
+    targets.add(path.resolve(process.cwd(), '../../public/images/uploads', folder));
 
     // Save to all targets
-    for (const dir of targets) {
-        // Ensure directory exists
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
+    for (const dir of Array.from(targets)) {
+        try {
+            // Ensure directory exists
+            if (!fs.existsSync(dir)) {
+                // Only create if the parent 'public' exists, to avoid creating garbage directories
+                // But for 'uploads' inside public, we should probably just create it.
+                // To be safe, we check if the path looks like it belongs to a valid public folder structure
+                // or just force it. For now, force recursive creation is safest to ensure it works.
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            
+            const filePath = path.join(dir, filename);
+            await writeFile(filePath, processedBuffer);
+            console.log(`[Upload] Saved file to: ${filePath}`);
+        } catch (err) {
+            console.error(`[Upload] Failed to save to target ${dir}:`, err);
+            // Continue to next target even if one fails
         }
-        
-        const filePath = path.join(dir, filename);
-        await writeFile(filePath, processedBuffer);
-        console.log(`[Upload] Saved file to: ${filePath}`);
     }
 
     return NextResponse.json({ url: `/images/uploads/${folder}/${filename}` });
@@ -217,10 +222,22 @@ export async function DELETE(request: Request) {
     }
 
     const relativePath = url.substring(1); // Remove leading slash
-    const fullPath = path.join(process.cwd(), 'public', relativePath);
+    
+    // Determine delete targets (match upload logic)
+    const targets = new Set<string>();
+    targets.add(path.resolve(process.cwd(), 'public', relativePath));
+    targets.add(path.resolve(process.cwd(), '.next/standalone/public', relativePath));
+    targets.add(path.resolve(process.cwd(), '../../public', relativePath));
 
-    if (fs.existsSync(fullPath)) {
-        fs.unlinkSync(fullPath);
+    for (const fullPath of Array.from(targets)) {
+        try {
+            if (fs.existsSync(fullPath)) {
+                fs.unlinkSync(fullPath);
+                console.log(`[Delete] Removed file: ${fullPath}`);
+            }
+        } catch (e) {
+            console.error(`[Delete] Failed to remove ${fullPath}:`, e);
+        }
     }
     
     return NextResponse.json({ success: true });
