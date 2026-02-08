@@ -54,10 +54,18 @@ git commit -m "$msg"
 
 Write-Host ""
 Write-Host "[2/3] Pushing to GitHub (Vercel)..." -ForegroundColor Yellow
+# Unset GIT_SSH_COMMAND for GitHub to use default system keys
+$env:GIT_SSH_COMMAND = ""
 git push origin main
 
 Write-Host ""
 Write-Host "[3/3] Pushing to Aliyun..." -ForegroundColor Yellow
+
+# Set GIT_SSH_COMMAND specifically for Aliyun push
+if (Test-Path $KeyFile) {
+    $env:GIT_SSH_COMMAND = "ssh -i `"$KeyFile`" -o StrictHostKeyChecking=no -o IdentitiesOnly=yes"
+}
+
 git push aliyun main
 
 Write-Host ""

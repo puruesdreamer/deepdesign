@@ -182,6 +182,12 @@ export async function POST(request: Request) {
     // In standalone mode, process.cwd() is usually .next/standalone, so root is ../../
     targets.add(path.resolve(process.cwd(), '../../public/images/uploads', folder));
 
+    // 4. External Production Uploads Dir (Nginx served)
+    // This allows Nginx to serve files directly, bypassing Next.js cache and performance overhead
+    if (process.platform === 'linux') {
+        targets.add(path.join('/var/www/deepdesign_uploads', folder));
+    }
+
     // Save to all targets
     let savedCount = 0;
     const errors: string[] = [];
@@ -237,6 +243,14 @@ export async function DELETE(request: Request) {
     targets.add(path.resolve(process.cwd(), 'public', relativePath));
     targets.add(path.resolve(process.cwd(), '.next/standalone/public', relativePath));
     targets.add(path.resolve(process.cwd(), '../../public', relativePath));
+
+    // 4. External Production Uploads Dir
+    if (process.platform === 'linux') {
+         // relativePath is like 'images/uploads/team/file.jpg'
+         // We need 'team/file.jpg'
+         const internalPath = relativePath.replace(/^images\/uploads\//, '').replace(/^images\\uploads\\/, '');
+         targets.add(path.join('/var/www/deepdesign_uploads', internalPath));
+    }
 
     for (const fullPath of Array.from(targets)) {
         try {
